@@ -1,0 +1,26 @@
+
+/*main*/
+main{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    /*responsividade*/
+    min-width: 300px;
+    max-width: 1000px;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 8px;
+    box-shadow: 0px 0px 10px black;
+    border-radius: 10px 10px 10px 10px;
+}
+main p{
+    margin: 15px 0px;
+    text-align: justify;
+    text-indent: 30px;
+    font-size: 1em;
+    line-height: 2em;
+}
+footer{
+    text-align: center;
+      margin: auto;
+}
