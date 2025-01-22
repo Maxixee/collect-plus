@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: collect
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/seu_banco_de_dados
+    username: seu_usuario
+    password: sua_senha
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
