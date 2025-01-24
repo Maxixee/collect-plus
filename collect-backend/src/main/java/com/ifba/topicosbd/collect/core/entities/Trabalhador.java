@@ -1,10 +1,12 @@
 package com.ifba.topicosbd.collect.core.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "trabalhador")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Trabalhador {
 
     @Id
@@ -18,6 +20,6 @@ public class Trabalhador {
     @Column(name = "nome", nullable = false)
     private String nome;
     @ManyToOne
-    @JoinColumn(name = "equipe_id", nullable = false)
+    @JoinColumn(name = "equipe_id")
     private EquipeColeta equipe;
 }
