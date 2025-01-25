@@ -3,6 +3,9 @@ package com.ifba.topicosbd.collect.core.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "trabalhador")
 @Getter @Setter
@@ -19,7 +22,6 @@ public class Trabalhador {
     private String salario;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @ManyToOne
-    @JoinColumn(name = "equipe_id")
-    private EquipeColeta equipe;
+    @OneToMany(mappedBy = "trabalhador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TrabalhadorEquipeColeta> trabalhadorEquipeColetas = new HashSet<>();
 }

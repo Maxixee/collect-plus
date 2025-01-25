@@ -27,7 +27,7 @@ public class TrabalhadorService {
             return trabalhador;
         } catch (DataIntegrityViolationException e) {
             log.error("Erro ao salvar trabalhador com CPF: {}. Exceção: {}", trabalhador.getCPF(), e.getMessage());
-            throw new EntityAlreadyExistsException(e.getMessage());
+            throw new EntityAlreadyExistsException("Já tem um trbalhador com esse CPF;");
         }
     }
 
