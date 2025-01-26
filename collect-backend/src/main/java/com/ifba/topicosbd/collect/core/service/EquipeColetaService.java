@@ -1,16 +1,23 @@
 package com.ifba.topicosbd.collect.core.service;
 
 import com.ifba.topicosbd.collect.core.entities.EquipeColeta;
+import com.ifba.topicosbd.collect.core.entities.Trabalhador;
 import com.ifba.topicosbd.collect.core.exceptions.DatabaseException;
 import com.ifba.topicosbd.collect.core.exceptions.EntityAlreadyExistsException;
 import com.ifba.topicosbd.collect.core.exceptions.EntityNotFoundException;
 import com.ifba.topicosbd.collect.core.exceptions.InvalidRegistrationInformationException;
 import com.ifba.topicosbd.collect.core.repository.EquipeColetaRepository;
+import com.ifba.topicosbd.collect.core.repository.TrabalhadorRepository;
+import com.ifba.topicosbd.collect.core.repository.projection.EquipeColetaProjection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.plaf.PanelUI;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EquipeColetaService {
 
     private final EquipeColetaRepository repository;
+    private final TrabalhadorService trabalhadorService;
 
     @Transactional
     public EquipeColeta create(EquipeColeta equipeColeta) {
@@ -52,6 +60,39 @@ public class EquipeColetaService {
                 });
     }
 
+    @Transactional(readOnly = true)
+    public Page<EquipeColetaProjection> findByTrabalhador(Long trabalhadorId, Pageable pageable) {
+        log.info("Buscando equipe de coleta para o trabalhador com ID: {}", trabalhadorId);
+        Page<EquipeColetaProjection> trabalhadores = repository.findByTrabalhadoresId(trabalhadorId, pageable);
+        log.info("Encontradas {} equipes para o trabalhador com ID: {}", trabalhadores.getTotalElements(), trabalhadorId);
+
+        return trabalhadores;
+    }
+
+    @Transactional
+    public void adicionarTrabalhador(Long equipeId, Long trabalhadorId) {
+        log.info("Adicionando trabalhador com ID: {} à equipe de coleta com ID: {}", trabalhadorId, equipeId);
+        EquipeColeta equipeColeta = findById(equipeId);
+        Trabalhador trabalhador = trabalhadorService.findById(trabalhadorId);
+
+        equipeColeta.getTrabalhadores().add(trabalhador);
+        repository.save(equipeColeta);
+
+        log.info("Trabalhador com ID: {} adicionado à equipe com ID: {}", trabalhadorId, equipeId);
+    }
+
+    @Transactional
+    public void removerTrabalhador(Long equipeId, Long trabalhadorId) {
+        log.info("Removendo trabalhador com ID: {} da equipe de coleta com ID: {}", trabalhadorId, equipeId);
+        EquipeColeta equipeColeta = findById(equipeId);
+        Trabalhador trabalhador = trabalhadorService.findById(trabalhadorId);
+
+        equipeColeta.getTrabalhadores().remove(trabalhador);
+        repository.save(equipeColeta);
+
+        log.info("Trabalhador com ID: {} removido da equipe com ID: {}", trabalhadorId, equipeId);
+    }
+
     @Transactional
     public void update(Long id, String novaPlaca) {
         log.info("Atualizando equipe de coleta com ID: {}", id);
@@ -81,7 +122,6 @@ public class EquipeColetaService {
             throw new DatabaseException(e.getMessage());
         }
     }
-
 
     @Transactional
     public void delete(Long id){

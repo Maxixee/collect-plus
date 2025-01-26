@@ -22,6 +22,7 @@ public class Trabalhador {
     private String salario;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @OneToMany(mappedBy = "trabalhador", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TrabalhadorEquipeColeta> trabalhadorEquipeColetas = new HashSet<>();
+    @ManyToMany(mappedBy = "trabalhadores")
+    @Setter(AccessLevel.NONE)
+    private Set<EquipeColeta> equipes = new HashSet<>();
 }

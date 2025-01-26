@@ -1,10 +1,7 @@
 package com.ifba.topicosbd.collect.core.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +19,12 @@ public class EquipeColeta {
     private Long id;
     @Column(unique = true)
     private String placaDoCarro;
-    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TrabalhadorEquipeColeta> trabalhadorEquipeColetas = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "trabalhador_equipe_coleta",
+            joinColumns = @JoinColumn(name = "equipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "trabalhador_id")
+    )
+    @Setter(AccessLevel.NONE)
+    private Set<Trabalhador> trabalhadores = new HashSet<>();
 }

@@ -1,11 +1,14 @@
 package com.ifba.topicosbd.collect.api.controller;
 
+import com.ifba.topicosbd.collect.api.dto.PageableDto;
 import com.ifba.topicosbd.collect.api.dto.TrabalhadorCreateDto;
 import com.ifba.topicosbd.collect.api.dto.TrabalhadorResponseDto;
 import com.ifba.topicosbd.collect.api.dto.TrabalhadorUpdateDto;
 import com.ifba.topicosbd.collect.api.exceptionHandlers.ErrorMessage;
+import com.ifba.topicosbd.collect.api.mapper.PageableMapper;
 import com.ifba.topicosbd.collect.api.mapper.TrabalhadorMapper;
 import com.ifba.topicosbd.collect.core.entities.Trabalhador;
+import com.ifba.topicosbd.collect.core.repository.projection.TrabalhadorProjection;
 import com.ifba.topicosbd.collect.core.service.TrabalhadorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,6 +79,23 @@ public class TrabalhadorController {
     public ResponseEntity<TrabalhadorResponseDto> findByCPF(@RequestParam("cpf") String cpf) {
         Trabalhador trabalhador = trabalhadorService.findByCPF(cpf);
         return ResponseEntity.ok(TrabalhadorMapper.toDto(trabalhador));
+    }
+
+    @Operation(
+            summary = "Buscar trabalhadores por ID da equipe de coleta",
+            description = "Recupera uma lista paginada de trabalhadores associados a uma equipe de coleta específica.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de trabalhadores da equipe de coleta encontrada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))
+                    )
+            }
+    )
+    @GetMapping(value = "find-by-equipe-coleta", params = "id")
+    public ResponseEntity<PageableDto> findByEquipeColeta(@RequestParam("id") Long equipeId, Pageable pageable){
+        Page<TrabalhadorProjection> trabalhadores = trabalhadorService.findByEquipeColeta(equipeId, pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(trabalhadores));
     }
 
     @Operation(
