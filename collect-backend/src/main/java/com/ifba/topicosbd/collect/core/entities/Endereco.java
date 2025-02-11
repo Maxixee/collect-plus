@@ -21,7 +21,7 @@ public class Endereco {
     @Column(name = "cidade", nullable = false)
     private String cidade;
     @Column(name = "rua", nullable = false)
-    private String Rua;
+    private String rua;
     @Column(name = "numero")
     private Integer numero;
     @Column(name = "complemento")
