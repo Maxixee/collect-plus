@@ -6,8 +6,10 @@ import com.ifba.topicosbd.collect.api.dto.PontoDeColetaResponseDto;
 import com.ifba.topicosbd.collect.api.exceptionHandlers.ErrorMessage;
 import com.ifba.topicosbd.collect.api.mapper.PageableMapper;
 import com.ifba.topicosbd.collect.api.mapper.PontoDeColetaMapper;
+import com.ifba.topicosbd.collect.core.entities.Endereco;
 import com.ifba.topicosbd.collect.core.entities.PontoDeColeta;
 import com.ifba.topicosbd.collect.core.repository.projection.PontoDeColetaProjection;
+import com.ifba.topicosbd.collect.core.service.EnderecoService;
 import com.ifba.topicosbd.collect.core.service.PontoDeColetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class PontoDeColetaController {
 
     private final PontoDeColetaService pontoDeColetaService;
+    private final EnderecoService enderecoService;
 
     @Operation(
             summary = "Criar um novo ponto de coleta",
@@ -44,8 +47,13 @@ public class PontoDeColetaController {
     )
     @PostMapping
     public ResponseEntity<PontoDeColetaResponseDto> create(@Valid @RequestBody PontoDeColetaCreateDto createDto) {
-        PontoDeColeta pontoDeColeta = pontoDeColetaService.create(PontoDeColetaMapper.toEntity(createDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(PontoDeColetaMapper.toDto(pontoDeColeta));
+        Endereco endereco = enderecoService.findById(createDto.getEndereco());
+        PontoDeColeta pontoDeColeta = new PontoDeColeta();
+        pontoDeColeta.setTipoLixo(createDto.getTipoLixo());
+        pontoDeColeta.setEndereco(endereco);
+
+        PontoDeColeta body = pontoDeColetaService.create(pontoDeColeta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(PontoDeColetaMapper.toDto(body));
     }
 
     @Operation(

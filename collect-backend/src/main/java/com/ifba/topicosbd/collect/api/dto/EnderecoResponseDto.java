@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EnderecoResponseDto {
 
+    private Long id;
+
     private String cep;
 
     private String cidade;
