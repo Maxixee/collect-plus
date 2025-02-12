@@ -3,6 +3,7 @@ package com.ifba.topicosbd.collect.core.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,4 +28,7 @@ public class EquipeColeta {
     )
     @Setter(AccessLevel.NONE)
     private Set<Trabalhador> trabalhadores = new HashSet<>();
+
+    @OneToMany(mappedBy = "equipeColeta")
+    private List<Coleta> coletas = new ArrayList<>();
 }

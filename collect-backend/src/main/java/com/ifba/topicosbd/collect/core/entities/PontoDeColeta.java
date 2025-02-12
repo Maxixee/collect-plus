@@ -5,6 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -21,6 +24,9 @@ public class PontoDeColeta {
     @ManyToOne
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "pontoColeta")
+    private List<Coleta> coletas = new ArrayList<>();
 
     @Column(name = "tipo_lixo", nullable = false)
     private String tipoLixo;

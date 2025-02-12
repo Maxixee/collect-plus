@@ -3,18 +3,25 @@ spring:
     name: collect
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/seu_banco_de_dados
-    username: seu_usuario
-    password: sua_senha
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   logging:
     level:
       org.hibernate.SQL: DEBUG
