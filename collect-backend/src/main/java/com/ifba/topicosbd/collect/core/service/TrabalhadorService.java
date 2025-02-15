@@ -55,6 +55,14 @@ public class TrabalhadorService {
     }
 
     @Transactional(readOnly = true)
+    public Page<TrabalhadorProjection> findAll(Pageable pageable){
+        log.info("Buscando todos os trabalhadores.");
+        Page<TrabalhadorProjection> trabalhadores = repository.findAllPageable(pageable);
+
+        return trabalhadores;
+    }
+
+    @Transactional(readOnly = true)
     public Page<TrabalhadorProjection> findByEquipeColeta(Long equipeId, Pageable pageable) {
         log.info("Buscando trabalhadores para a equipe de coleta com ID: {}", equipeId);
 

@@ -50,6 +50,23 @@ public class TrabalhadorController {
     }
 
     @Operation(
+            summary = "Buscar todos os trabalhadores",
+            description = "Recupera uma lista paginada de todos os trabalhadores.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de trabalhadores encontrada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))
+                    )
+            }
+    )
+    @GetMapping(value = "find-all")
+    public ResponseEntity<PageableDto> findAll(Pageable pageable) {
+        Page<TrabalhadorProjection> trabalhadores = trabalhadorService.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(trabalhadores));
+    }
+
+    @Operation(
             summary = "Buscar trabalhador por ID",
             description = "Busca um trabalhador pelo ID fornecido.",
             responses = {

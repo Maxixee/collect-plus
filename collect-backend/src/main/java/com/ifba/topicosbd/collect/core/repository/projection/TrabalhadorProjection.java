@@ -5,5 +5,6 @@ public interface TrabalhadorProjection {
     Long getId();
     String getNome();
     String getCPF();
+    String getSalario();
 
 }

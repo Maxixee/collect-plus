@@ -9,6 +9,8 @@ import com.ifba.topicosbd.collect.api.mapper.EquipeColetaMapper;
 import com.ifba.topicosbd.collect.api.mapper.PageableMapper;
 import com.ifba.topicosbd.collect.core.entities.EquipeColeta;
 import com.ifba.topicosbd.collect.core.repository.projection.EquipeColetaProjection;
+import com.ifba.topicosbd.collect.core.repository.projection.EquipeProjection;
+import com.ifba.topicosbd.collect.core.repository.projection.TrabalhadorProjection;
 import com.ifba.topicosbd.collect.core.service.EquipeColetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,6 +50,23 @@ public class EquipeColetaController {
     public ResponseEntity<EquipeColetaResponseDto> create(@Valid @RequestBody EquipeColetaCreateDto createDto) {
         EquipeColeta equipe = equipeColetaService.create(EquipeColetaMapper.toEntity(createDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(EquipeColetaMapper.toDto(equipe));
+    }
+
+    @Operation(
+            summary = "Buscar todas as Equipes de Coleta",
+            description = "Recupera uma lista paginada de todas as equipes.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de equipes encontrada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))
+                    )
+            }
+    )
+    @GetMapping(value = "find-all")
+    public ResponseEntity<PageableDto> findAll(Pageable pageable) {
+        Page<EquipeProjection> equipes = equipeColetaService.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(equipes));
     }
 
     @Operation(

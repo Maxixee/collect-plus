@@ -9,6 +9,8 @@ import com.ifba.topicosbd.collect.core.exceptions.InvalidRegistrationInformation
 import com.ifba.topicosbd.collect.core.repository.EquipeColetaRepository;
 import com.ifba.topicosbd.collect.core.repository.TrabalhadorRepository;
 import com.ifba.topicosbd.collect.core.repository.projection.EquipeColetaProjection;
+import com.ifba.topicosbd.collect.core.repository.projection.EquipeProjection;
+import com.ifba.topicosbd.collect.core.repository.projection.TrabalhadorProjection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,6 +40,14 @@ public class EquipeColetaService {
             log.error("Erro ao salvar equipe de coleta com plca do carro: {}. Exceção: {}", equipeColeta.getPlacaDoCarro(), e.getMessage());
             throw new EntityAlreadyExistsException("Esse carro já é usado por outra equipe.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EquipeProjection> findAll(Pageable pageable){
+        log.info("Buscando todas as equipes.");
+        Page<EquipeProjection> equipes = repository.findAllPageable(pageable);
+
+        return equipes;
     }
 
     @Transactional(readOnly = true)
