@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark" class="h-100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bootstrap por link-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Bootstrap por download-->
+    <link rel="stylesheet" href="../bootstrap/bootstrap-5.3.3-dist/css/bootstrap-grid.css">
+    <script src="../bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="style_equip.css">
+    <link rel="shortcut icon" href="img/icons8-equipe-50.png" type="image/x-icon">
+    <title>EQUIPE</title>
+</head>
+<body class="d-flex align-items-center py-4 bg-body-">
+<main class="w-100 m-auto formulario">
+    <!--formulario-->
+    <!--coletando informações-->
+    <form>
+        <img src="img/icons8-equipe-50.png" alt="" class="mb-4" height="57" width="72"/>
+        <h1 class="h4 mb-3 fw-normal">EQUIPE</h1>
+
+        <!-- Campo para o ID do Trabalhador -->
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInputTrabalhador" placeholder="ID Trabalhador">
+            <label for="floatingInputTrabalhador">ID TRABALHADOR</label>
+        </div>
+
+        <!-- Campo para o ID da Equipe de Coleta -->
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInputEquipe" placeholder="ID Equipe de Coleta">
+            <label for="floatingInputEquipe">ID EQUIPE DE COLETA</label>
+        </div>
+
+        <!-- Botão para cadastrar -->
+        <button class="adicionar-trabalhador btn btn-primary w-100 py-2" type="submit">ADICIONAR</button>
+    </form>
+
+    <!-- Links adicionais -->
+    <a class="button btn btn-primary w-100 py-2" href="equipecad.html">CADASTRADOS</a>
+    <a class="button btn btn-primary w-100 py-2" href="../main/index.html">VOLTAR</a>
+</main>
+
+    <script src="../../js/EquipeColetaApiConsume.js"></script>
+</body>
+</html>
