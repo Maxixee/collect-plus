@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Equipes de Coleta", description = "Gerenciamento de equipes de coleta no sistema de resíduos sólidos.")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("collect-plus/v1/equipes-coleta")
 public class EquipeColetaController {

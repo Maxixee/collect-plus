@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Trabalhadores", description = "Gerenciamento de trabalhadores no sistema de coleta de resíduos sólidos.")
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("collect-plus/v1/trabalhadores")
 public class TrabalhadorController {
 
@@ -44,7 +43,7 @@ public class TrabalhadorController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @PostMapping
+    @PostMapping(value = "create")
     public ResponseEntity<TrabalhadorResponseDto> create(@Valid @RequestBody TrabalhadorCreateDto createDto) {
         Trabalhador trabalhador = trabalhadorService.create(TrabalhadorMapper.toEntity(createDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(TrabalhadorMapper.toDto(trabalhador));
