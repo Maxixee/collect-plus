@@ -24,6 +24,7 @@
                     <tr>
                         <th>ID</th>
                         <th>CEP</th>
+                        <th>Cidade</th>
                         <th>RUA</th>
                         <th>NUMERO</th>
                         <th>COMPLEMENTO</th>
@@ -39,6 +40,42 @@
         </div>
 
         <center><a class="btn btn-primary w-39 py-2" href="./endereco.html">VOLTAR</a></center>
+    </div>
+    <!-- Modal de Edição de Endereço -->
+    <div class="modal fade" id="editEnderecoModal" tabindex="-1" aria-labelledby="editEnderecoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEnderecoModalLabel">Editar Endereço</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEnderecoForm">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="editEnderecoCep" placeholder="CEP">
+                            <label for="editEnderecoCep">CEP</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="editEnderecoCidade" placeholder="Cidade">
+                            <label for="editEnderecoCidade">Cidade</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="editEnderecoRua" placeholder="Rua">
+                            <label for="editEnderecoRua">Rua</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="editEnderecoNumero" placeholder="Número">
+                            <label for="editEnderecoNumero">Número</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="editEnderecoComplemento" placeholder="Complemento" style="height: 100px;"></textarea>
+                            <label for="editEnderecoComplemento">Complemento</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Inclui o JavaScript -->

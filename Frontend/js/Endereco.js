@@ -58,6 +58,7 @@ async function findAllEnderecos() {
             novaLinha.innerHTML = `
                 <td>${endereco.id || "N/A"}</td>
                 <td>${endereco.cep || "N/A"}</td>
+                <td>${endereco.cidade || "N/A"}</td>
                 <td>${endereco.rua || "N/A"}</td>
                 <td>${endereco.numero || "N/A"}</td>
                 <td>${endereco.complemento || "N/A"}</td>
@@ -101,8 +102,66 @@ async function deleteEndereco(id) {
 }
 
 // Função para editar um endereço (redireciona para a página de edição)
-function editarEndereco(id) {
-    window.location.href = `.html?id=${id}`;
+async function editarEndereco(id) {
+    try {
+        // Busca os dados do endereço
+        const response = await fetch(`${baseUrl}/find-by-id?id=${id}`);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar endereço: ${response.statusText}`);
+        }
+        const endereco = await response.json();
+
+        // Preenche os campos do formulário de edição
+        document.getElementById("editEnderecoCep").value = endereco.cep;
+        document.getElementById("editEnderecoCidade").value = endereco.cidade;
+        document.getElementById("editEnderecoRua").value = endereco.rua;
+        document.getElementById("editEnderecoNumero").value = endereco.numero;
+        document.getElementById("editEnderecoComplemento").value = endereco.complemento;
+
+        // Atualiza o título do modal para "Editar Endereço"
+        document.querySelector(".modal-title").textContent = "Editar Endereço";
+
+        // Exibe o modal usando Bootstrap
+        const formModal = new bootstrap.Modal(document.getElementById("editEnderecoModal"));
+        formModal.show();
+
+        // Configura o evento de envio do formulário
+        const form = document.getElementById("editEnderecoForm");
+        form.onsubmit = async function (event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            // Cria o objeto atualizado
+            const updatedEndereco = {
+                cep: document.getElementById("editEnderecoCep").value,
+                cidade: document.getElementById("editEnderecoCidade").value,
+                rua: document.getElementById("editEnderecoRua").value,
+                numero: document.getElementById("editEnderecoNumero").value,
+                complemento: document.getElementById("editEnderecoComplemento").value,
+            };
+
+            try {
+                // Faz a requisição PATCH para atualizar os dados
+                const updateResponse = await fetch(`${baseUrl}/update?id=${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedEndereco),
+                });
+
+                if (updateResponse.ok) {
+                    form.reset(); // Limpa o formulário
+                    findAllEnderecos(); // Atualiza a tabela
+                    alert("Endereço atualizado com sucesso!");
+                    formModal.hide(); // Fecha o modal após a atualização
+                } else {
+                    alert("Erro ao atualizar endereço.");
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar endereço:", error);
+            }
+        };
+    } catch (error) {
+        console.error("Erro ao buscar endereço:", error);
+    }
 }
 
 // Carrega os endereços ao abrir a página
