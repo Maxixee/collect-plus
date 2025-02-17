@@ -82,7 +82,7 @@ async function deleteEndereco(id) {
     if (!confirm("Tem certeza de que deseja excluir este endereço?")) return;
 
     try {
-        const response = await fetch(`${baseUrl}/${id}`, {
+        const response = await fetch(`${baseUrl}/delete?id=${id}`, {
             method: 'DELETE',
         });
 
@@ -102,7 +102,7 @@ async function deleteEndereco(id) {
 
 // Função para editar um endereço (redireciona para a página de edição)
 function editarEndereco(id) {
-    window.location.href = `editar-endereco.html?id=${id}`;
+    window.location.href = `.html?id=${id}`;
 }
 
 // Carrega os endereços ao abrir a página
