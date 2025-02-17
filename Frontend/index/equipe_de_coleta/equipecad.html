@@ -7,8 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap por download -->
-    <link rel="stylesheet" href="../bootstrap/bootstrap-5.3.3-dist/css/bootstrap-grid.css">
-    <script src="../bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/bootstrap-5.3.3-dist/css/bootstrap-grid.css">
+    <script src="../../bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
     <link rel="shortcut icon" href="img/icons8-crachá-50.png" type="image/x-icon">
     <title>Equipes de Coleta</title>
 </head>
@@ -20,8 +20,7 @@
             <tr>
                 <th>ID</th>
                 <th>PLACA DO CARRO</th>
-                <th>EDITAR</th>
-                <th>EXCLUIR</th>
+                <th>AÇÕES</th>
             </tr>
             </thead>
             <tbody id="tableBody">
@@ -30,9 +29,20 @@
             <caption class="text-center">EQUIPE DE COLETA</caption>
         </table>
     </div>
-    <center><a class="btn btn-primary w-39 py-2" href="adicionar-trabalhador.html">VOLTAR</a></center>
+
+    <div style="text-align: center;"><a class="botao-voltar btn btn-primary w-39 py-2" href="cadastrar-equipe.html">VOLTAR</a></div>
+
 </div>
 
-<script src="../../js/EquipeColetaApiConsume.js"></script> <!-- Link para seu script JavaScript -->
+<script src="../../js/EquipeColetaApiConsume.js"></script>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        findAllEquipes();
+    });
+
+</script>
+
 </body>
 </html>

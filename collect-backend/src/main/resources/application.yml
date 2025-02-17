@@ -28,4 +28,4 @@ spring:
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 cors:
-  origin-patterns: "http://localhost:8080,http://localhost:63343"
+  origin-patterns: "*"
