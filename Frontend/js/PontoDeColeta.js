@@ -108,8 +108,60 @@ async function deletePontoDeColeta(id) {
 }
 
 // Função para editar um ponto de coleta (redireciona para a página de edição)
-function editarPontoDeColeta(id) {
-    window.location.href = `editar_ponto_coleta.html?id=${id}`;
+async function editarPontoDeColeta(id) {
+    try {
+        // Busca os dados do ponto de coleta
+        const response = await fetch(`${baseUrl}/find-by-id?id=${id}`);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar ponto de coleta: ${response.statusText}`);
+        }
+        const pontoDeColeta = await response.json();
+
+        // Preenche os campos do formulário de edição
+        document.getElementById("editPontoDeColetaEndereco").value = pontoDeColeta.endereco.id;
+        document.getElementById("editPontoDeColetaTipoLixo").value = pontoDeColeta.tipoLixo;
+
+        // Atualiza o título do modal para "Editar Ponto de Coleta"
+        document.querySelector(".modal-title").textContent = "Editar Ponto de Coleta";
+
+        // Exibe o modal usando Bootstrap
+        const formModal = new bootstrap.Modal(document.getElementById("editPontoDeColetaModal"));
+        formModal.show();
+
+        // Configura o evento de envio do formulário
+        const form = document.getElementById("editPontoDeColetaForm");
+        form.onsubmit = async function (event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            // Cria o objeto atualizado
+            const updatedPontoDeColeta = {
+                endereco: parseInt(document.getElementById("editPontoDeColetaEndereco").value),
+                tipoLixo: document.getElementById("editPontoDeColetaTipoLixo").value,
+            };
+
+            try {
+                // Faz a requisição PATCH para atualizar os dados
+                const updateResponse = await fetch(`${baseUrl}/update?id=${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedPontoDeColeta),
+                });
+
+                if (updateResponse.ok) {
+                    form.reset(); // Limpa o formulário
+                    findAllPontosDeColeta(); // Atualiza a tabela
+                    alert("Ponto de coleta atualizado com sucesso!");
+                    formModal.hide(); // Fecha o modal após a atualização
+                } else {
+                    alert("Erro ao atualizar ponto de coleta.");
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar ponto de coleta:", error);
+            }
+        };
+    } catch (error) {
+        console.error("Erro ao buscar ponto de coleta:", error);
+    }
 }
 
 // Carrega os pontos de coleta ao abrir a página

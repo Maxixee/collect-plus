@@ -31,6 +31,39 @@
     </div >  
         <center><a class="btn btn-primary w-40 py-2" href="coleta.html">VOLTAR</a></center>
    </div>
+   <!-- Modal de Edição de Ponto de Coleta -->
+    <div class="modal fade" id="editPontoDeColetaModal" tabindex="-1" aria-labelledby="editPontoDeColetaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPontoDeColetaModalLabel">Editar Ponto de Coleta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPontoDeColetaForm">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="editPontoDeColetaEndereco" placeholder="ID do Endereço">
+                            <label for="editPontoDeColetaEndereco">ID do Endereço</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="editPontoDeColetaTipoLixo" placeholder="Tipo de Lixo">
+                                <option>Reciclável</option>
+                                <option>Orgânico</option>
+                                <option>Doméstico</option>
+                                <option>Comercial</option>
+                                <option>Industrial</option>
+                                <option>Hospitalar</option>
+                                <option>Eletrônico</option>
+                                <option>Radioativo</option>
+                            </select>
+                            <label for="editPontoDeColetaTipoLixo">Tipo de Lixo</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
    <script src="../../js/PontoDeColeta.js"></script>
 </body>
 </html>
