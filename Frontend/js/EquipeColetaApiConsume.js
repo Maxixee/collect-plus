@@ -14,46 +14,70 @@ async function createEquipeColeta() {
             body: JSON.stringify(equipeData)
         });
 
-        if (response.ok) {
+        if (response.create) {
             alert('Equipe de coleta criada com sucesso!');
-            window.location.href = 'equipes_cadastradas.html';
-        } else {
-            const errorData = await response.json();
-            console.error('Erro ao criar equipe de coleta:', errorData);
-            alert('Erro ao criar equipe de coleta. Verifique os dados informados.');
         }
+
     } catch (error) {
         console.error('Erro na requisição:', error);
         alert('Ocorreu um erro ao criar a equipe de coleta.');
     }
 }
 
-async function findAll() {
+async function findAllEquipes() {
     try {
         const response = await fetch(`${baseUrl}/find-all`);
         const data = await response.json();
 
-        if (!data.content || data.content.length === 0) {
+        console.log("Dados recebidos:", data);
+
+        // Extrai a lista de equipes da propriedade "content"
+        const equipes = data.content;
+        if (!equipes || equipes.length === 0) {
             console.log("Nenhuma equipe encontrada.");
             return;
         }
 
-        const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
-
-        data.content.forEach(equipe => {
+        // Para cada equipe, cria uma linha na tabela
+        equipes.forEach(equipe => {
+            // Cria um novo elemento de linha (<tr>)
             const novaLinha = document.createElement('tr');
 
-            novaLinha.innerHTML = `
-                <td>${equipe.id || "N/A"}</td>
-                <td>${equipe.placaDoCarro || "Não especificada"}</td>
-                <td>
-                    <button class="btn btn-secondary btn-sm me-2" onclick="window.location.href='editar-adicionar-trabalhador.html?id=${equipe.id}'">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteEquipe(${equipe.id})">Excluir</button>
-                </td>
-            `;
+            // Cria as células da tabela para exibir os dados da equipe
+            const tdId = document.createElement('td');
+            const tdPlacaDoCarro = document.createElement('td');
+            const tdAcoes = document.createElement('td');
 
-            tableBody.appendChild(novaLinha);
+            // Preenche as células com os dados da equipe
+            tdId.innerText = equipe.id || "N/A";
+            tdPlacaDoCarro.innerText = equipe.placaDoCarro || "Não especificada";
+
+            // Cria o botão de "Excluir"
+            const btnExcluir = document.createElement('button');
+            btnExcluir.classList.add('btn', 'btn-danger', 'btn-sm');
+            btnExcluir.textContent = 'Excluir';
+            // Ao clicar, chama a função deleteEquipe passando o id da equipe
+            btnExcluir.addEventListener('click', () => deleteEquipe(equipe.id));
+
+            // Cria o botão de "Ver Trabalhadores"
+            const btnVerTrabalhadores = document.createElement('button');
+            btnVerTrabalhadores.classList.add('btn', 'btn-danger', 'btn-sm');
+            btnVerTrabalhadores.textContent = 'Ver Trabalhadores';
+            btnVerTrabalhadores.addEventListener('click', () => {
+                window.location.assign(`../trabalhadores/trabalhadores-by-equipe.html?id=${equipe.id}`);
+            });
+
+            // Adiciona os botões na célula de ações
+            tdAcoes.appendChild(btnExcluir);
+            tdAcoes.appendChild(btnVerTrabalhadores);
+
+            // Adiciona todas as células na linha criada
+            novaLinha.appendChild(tdId);
+            novaLinha.appendChild(tdPlacaDoCarro);
+            novaLinha.appendChild(tdAcoes);
+
+            // Adiciona a linha na tabela (elemento com id "tableBody")
+            document.getElementById('tableBody').appendChild(novaLinha);
         });
     } catch (error) {
         console.error("Erro na requisição:", error);
@@ -69,7 +93,6 @@ async function deleteEquipe(id) {
 
             if (response.ok) {
                 alert('Equipe excluída com sucesso!');
-                findAll(); // Atualiza a tabela após exclusão
             } else {
                 const errorData = await response.json();
                 console.error('Erro ao excluir equipe:', errorData);
@@ -114,18 +137,43 @@ async function adicionarTrabalhadorEquipe() {
     }
 }
 
+async function removerTrabalhadorEquipe() {
+    const trabalhadorId = document.getElementById('floatingInputTrabalhador').value;
+    const equipeColetaId = document.getElementById('floatingInputEquipe').value;
+
+    if (!trabalhadorId || !equipeColetaId) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const trabalhadorEquipeData = { equipeColetaId, trabalhadorId };
+
+    try {
+        const response = await fetch(`${baseUrl}/remover-trabalhador`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(trabalhadorEquipeData)
+        });
+
+        if (response.ok) {
+            alert('Trabalhador removido da equipe com sucesso!');
+            window.location.href = 'equipes_cadastradas.html';
+        } else {
+            const errorData = await response.json();
+            console.error('Erro ao remover trabalhador da equipe:', errorData);
+            alert('Erro ao remover trabalhador da equipe. Verifique os dados informados.');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        alert('Ocorreu um erro ao remover o trabalhador da equipe.');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('.btn-primary').addEventListener('click', function (event) {
+    document.querySelector('.cadastrar-equipe').addEventListener('click', function (event) {
         event.preventDefault();
         createEquipeColeta();
-    });
-
-    findAll(); // Carrega as equipes ao carregar a página
-
-    // Adiciona o evento de clique ao botão de adicionar trabalhador
-    document.querySelector('.adicionar-trabalhador').addEventListener('click', function (event) {
-        event.preventDefault(); // Previne o comportamento padrão do formulário (se houver)
-        adicionarTrabalhadorEquipe(); // Chama a função para adicionar o trabalhador à equipe
+        window.location.href = 'equipecad.html';
     });
 });
 

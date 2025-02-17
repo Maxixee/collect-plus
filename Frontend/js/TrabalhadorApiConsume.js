@@ -43,7 +43,7 @@ async function createUser() {
     }
 }
 
-async function findAll() {
+async function findAllTrabalhadores() {
     // Monta a URL para buscar todos os trabalhadores
     const url = `${baseUrl}/find-all`; // Substitua pela URL correta, caso necessário
 
@@ -125,7 +125,6 @@ async function deleteUser(id) {
 
             if (response.ok) {
                 alert('Trabalhador excluído com sucesso!');
-                findAll();
             } else {
                 // Caso haja erro ao excluir
                 const errorData = await response.json();
@@ -139,48 +138,45 @@ async function deleteUser(id) {
     }
 }
 
-async function editTrabalhador(id) {
-    // Coleta os dados do formulário de edição usando os IDs corretos
-    const nome = document.getElementById('floatingInputNome').value;  // ID do nome
-    const salario = document.getElementById('floatingInputSalario').value;  // ID do salário
+async function editTrabalhador() {
+    // Obtém os valores do formulário
+    const nome = document.getElementById('floatingInputNome').value;
+    const salario = document.getElementById('floatingInputSalario').value;
 
-    // Monta o objeto com os dados do trabalhador
-    const userData = {
+    // Verifica se o ID do trabalhador está na URL
+    if (!id) {
+        alert("ID do trabalhador não encontrado.");
+        return;
+    }
+
+    // Monta o objeto com os dados atualizados
+    const updatedData = {
         nome: nome,
         salario: salario
     };
 
-    // Monta a URL para atualizar o trabalhador
-    const url = `${baseUrl}/collect-plus/v1/trabalhadores/update?id=${id}`; // URL de atualização com o ID do trabalhador
+    // URL do endpoint de atualização
+    const url = `${baseUrl}/update?id=${id}`;
 
     try {
         const response = await fetch(url, {
-            method: 'PATCH', // Método HTTP para atualização
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData) // Converte os dados para JSON
+            body: JSON.stringify(updatedData)
         });
 
         if (response.ok) {
             alert('Trabalhador atualizado com sucesso!');
-            // Redireciona ou atualiza a lista de trabalhadores após a edição
-            window.location.href = 'trabalhadores.html'; // Redireciona para a página de trabalhadores
+            window.location.href = 'trabalhadode_cad.html'; // Redireciona para a lista após a edição
         } else {
-            // Caso haja erro, tenta extrair a mensagem de erro da resposta
             const errorData = await response.json();
-            console.error('Erro ao atualizar trabalhador:', errorData);
-            alert('Erro ao atualizar trabalhador. Verifique os dados informados.');
+            console.error('Erro ao editar trabalhador:', errorData);
+            alert('Erro ao editar trabalhador. Verifique os dados informados.');
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
-        alert('Ocorreu um erro ao atualizar o trabalhador.');
+        alert('Ocorreu um erro ao editar o trabalhador.');
     }
 }
-
-// Adiciona o evento ao botão de cadastro
-document.addEventListener('DOMContentLoaded', function () {
-    // Chama a função para buscar todos os trabalhadores ao carregar a página
-    findAll();
-
-});

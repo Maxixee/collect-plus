@@ -15,9 +15,10 @@
 <body>
 <div class="container">
     <div class="table-responsive">
-        <table id="tabelaTrabalhadores" class="table table-striped table-hover table-bordered table-sm align-middle caption-top">
+        <table id="tabelaTrabalhadoresEquipe" class="table table-striped table-hover table-bordered table-sm align-middle caption-top">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>CPF</th>
                 <th>NOME</th>
                 <th>SALÁRIO</th>
@@ -25,21 +26,16 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Linhas dos trabalhadores serão inseridas aqui pelo JavaScript -->
             </tbody>
             <caption class="text-center">TRABALHADORES</caption>
         </table>
     </div>
-    <center><a class="btn btn-primary w-39 py-2" href="trabalhadores.html">VOLTAR</a></center>
-</div>
+    <div class="d-flex justify-content-between mt-3">
+        <a class="btn btn-success" id="adicionarTrabalhador" href="../equipe_de_coleta/adicionar-trabalhador.html">Adicionar Trabalhador à Equipe</a>
+        <div style="text-align: center;"><a class="botao-voltar btn btn-primary w-39 py-2" href="../equipe_de_coleta/equipecad.html">VOLTAR</a></div>
+        <a class="btn btn-danger" id="removerTrabalhador" href="../equipe_de_coleta/remover-trabalhador.html">Remover Trabalhador da Equipe</a>
+    </div></div>
 
-<script src="../../js/TrabalhadorApiConsume.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Chama a função para buscar todos os trabalhadores ao carregar a página
-        findAllTrabalhadores();
-    });
-</script>
+<script src="../../js/TrabalhadoresByEquipeApiConsume.js"></script> <!-- Caminho do seu script -->
 </body>
 </html>
