@@ -97,4 +97,16 @@ public class EnderecoService {
             throw new DatabaseException("Violação de integridade.");
         }
     }
+
+    @Transactional(readOnly = true)
+    public Page<EnderecoProjection> findAll(Pageable pageable) {
+        log.info("Buscando todos os endereços cadastrados.");
+
+        Page<EnderecoProjection> enderecos = repository.findAllProjectedBy(pageable);
+
+        log.info("Encontrados {} endereços.", enderecos.getTotalElements());
+
+        return enderecos;
+    }
+
 }

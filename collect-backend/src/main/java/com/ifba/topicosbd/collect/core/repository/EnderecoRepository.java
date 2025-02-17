@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
     Optional<Endereco> findByCep(String cep);
     Page<EnderecoProjection> findByCidade(String cidade, Pageable pageable);
+
+    Page<EnderecoProjection> findAllProjectedBy(Pageable pageable);
+
 }

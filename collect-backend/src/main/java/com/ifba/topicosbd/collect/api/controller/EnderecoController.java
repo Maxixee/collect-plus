@@ -129,4 +129,19 @@ public class EnderecoController {
         enderecoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(
+            summary = "Listar todos os endereços",
+            description = "Recupera uma lista paginada de todos os endereços cadastrados no sistema.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de endereços recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class)))
+            }
+    )
+    @GetMapping("find-all")
+    public ResponseEntity<PageableDto> findAll(Pageable pageable) {
+        Page<EnderecoProjection> enderecos = enderecoService.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(enderecos));
+    }
+
 }
