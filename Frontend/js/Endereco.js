@@ -19,7 +19,7 @@ async function createEndereco() {
 
         if (response.ok) {
             alert('Endereço cadastrado com sucesso!');
-            window.location.href = 'enderecos.html'; // Redireciona para a lista
+            window.location.href = 'endereco.html'; 
         } else {
             const errorData = await response.json();
             console.error('Erro ao cadastrar endereço:', errorData);

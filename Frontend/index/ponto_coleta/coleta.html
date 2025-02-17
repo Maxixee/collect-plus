@@ -21,24 +21,24 @@
         <img src="img/icons8-jogar-fora-50.png" alt="" class="mb-4" height="57" width="72"/>
         <h1 class="h4 mb-3 fw-norm">PONTO DE COLETA</h1>
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="ID_ENDEREÇO">
-            <label for="floatingInput">ID_ENDEREÇO</label>
+            <input type="text" class="form-control" id="enderecoId" placeholder="ID_ENDEREÇO">
+            <label for="enderecoId">ID_ENDEREÇO</label>
         </div>
         <div class="form-floating">    
-            <select type="number" class="form-control" id="floatingInput" placeholder="TIPO LIXO">
-                    <option>Reciclável</option>
-                    <option>Orgânico</option>
-                    <option>Doméstico</option>
-                    <option>Comercial</option>
-                    <option>Industrial</option>
-                    <option>Hospitalar</option>
-                    <option>Eletrônico</option>
-                    <option>Radioativo</option>
+            <select class="form-control" id="tipoLixo" placeholder="TIPO LIXO">
+                <option>Reciclável</option>
+                <option>Orgânico</option>
+                <option>Doméstico</option>
+                <option>Comercial</option>
+                <option>Industrial</option>
+                <option>Hospitalar</option>
+                <option>Eletrônico</option>
+                <option>Radioativo</option>
             </select>
-            <label for="floatingInput">TIPO DE RESÍDUO</label>
+            <label for="tipoLixo">TIPO DE RESÍDUO</label>
         </div>
         <div>
-            <button class="btn btn-primary w-100 py-2">CADASTRAR</button>
+            <button type="button" class="btn btn-primary w-100 py-2" onclick="createPontoDeColeta()">CADASTRAR</button>
         </div>
         <div class="text-center">
              <a class="btn btn-primary w-100 py-2" href="pontoc_cad.html">CADASTRADOS</a>
@@ -47,5 +47,6 @@
        <a class="btn btn-primary w-100 py-2" href="../main/index.html">VOLTAR</a>
         </div>
     </main>
+    <script src="../../js/PontoDeColeta.js"></script>
 </body>
 </html>

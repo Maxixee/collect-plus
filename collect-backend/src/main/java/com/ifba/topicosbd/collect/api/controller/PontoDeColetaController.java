@@ -8,6 +8,7 @@ import com.ifba.topicosbd.collect.api.mapper.PageableMapper;
 import com.ifba.topicosbd.collect.api.mapper.PontoDeColetaMapper;
 import com.ifba.topicosbd.collect.core.entities.Endereco;
 import com.ifba.topicosbd.collect.core.entities.PontoDeColeta;
+import com.ifba.topicosbd.collect.core.repository.projection.EnderecoProjection;
 import com.ifba.topicosbd.collect.core.repository.projection.PontoDeColetaProjection;
 import com.ifba.topicosbd.collect.core.service.EnderecoService;
 import com.ifba.topicosbd.collect.core.service.PontoDeColetaService;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Pontos de Coleta", description = "Gerenciamento de pontos de coleta no sistema.")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("collect-plus/v1/pontos-de-coleta")
@@ -116,6 +118,20 @@ public class PontoDeColetaController {
     public ResponseEntity<Void> delete(@RequestParam("id") Long id) {
         pontoDeColetaService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Listar todos os pontos de coleta",
+            description = "Recupera uma lista paginada de todos os pontos de coleta cadastrados no sistema.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de pontos de coleta recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class)))
+            }
+    )
+    @GetMapping("find-all")
+    public ResponseEntity<PageableDto> findAll(Pageable pageable) {
+        Page<PontoDeColetaProjection> pontosDeColeta = pontoDeColetaService.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(pontosDeColeta));
     }
 }
 

@@ -8,6 +8,7 @@ import com.ifba.topicosbd.collect.core.exceptions.EntityAlreadyExistsException;
 import com.ifba.topicosbd.collect.core.exceptions.EntityNotFoundException;
 import com.ifba.topicosbd.collect.core.repository.EnderecoRepository;
 import com.ifba.topicosbd.collect.core.repository.PontoDeColetaRepository;
+import com.ifba.topicosbd.collect.core.repository.projection.EnderecoProjection;
 import com.ifba.topicosbd.collect.core.repository.projection.PontoDeColetaProjection;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -104,5 +105,16 @@ public class PontoDeColetaService {
             log.error("Erro de integridade ao tentar excluir o ponto de coleta com ID {}: {}", id, e.getMessage());
             throw new DatabaseException("Violação de integridade.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PontoDeColetaProjection> findAll(Pageable pageable) {
+        log.info("Buscando todos os endereços cadastrados.");
+
+        Page<PontoDeColetaProjection> pontosDeColeta = repository.findAllProjectedBy(pageable);
+
+        log.info("Encontrados {} endereços.", pontosDeColeta.getTotalElements());
+
+        return pontosDeColeta;
     }
 }
