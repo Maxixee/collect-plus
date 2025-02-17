@@ -10,7 +10,6 @@ import com.ifba.topicosbd.collect.api.mapper.PageableMapper;
 import com.ifba.topicosbd.collect.core.entities.EquipeColeta;
 import com.ifba.topicosbd.collect.core.repository.projection.EquipeColetaProjection;
 import com.ifba.topicosbd.collect.core.repository.projection.EquipeProjection;
-import com.ifba.topicosbd.collect.core.repository.projection.TrabalhadorProjection;
 import com.ifba.topicosbd.collect.core.service.EquipeColetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
