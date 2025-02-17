@@ -50,6 +50,8 @@
             document.querySelector('.adicionar-trabalhador').addEventListener('click', function (event) {
                 event.preventDefault();
                 adicionarTrabalhadorEquipe();
+                const equipeId = document.getElementById('floatingInputEquipe').value;
+                window.location.href = `../trabalhadores/trabalhadores-by-equipe.html?id=${equipeId}`;
             });
         });
     </script>

@@ -125,7 +125,6 @@ async function adicionarTrabalhadorEquipe() {
 
         if (response.ok) {
             alert('Trabalhador adicionado à equipe com sucesso!');
-            window.location.href = 'equipes_cadastradas.html';
         } else {
             const errorData = await response.json();
             console.error('Erro ao adicionar trabalhador à equipe:', errorData);
@@ -157,7 +156,6 @@ async function removerTrabalhadorEquipe() {
 
         if (response.ok) {
             alert('Trabalhador removido da equipe com sucesso!');
-            window.location.href = 'equipes_cadastradas.html';
         } else {
             const errorData = await response.json();
             console.error('Erro ao remover trabalhador da equipe:', errorData);

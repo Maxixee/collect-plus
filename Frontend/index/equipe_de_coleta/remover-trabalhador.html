@@ -48,7 +48,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.remover-trabalhador').addEventListener('click', function (event) {
             event.preventDefault();
-            removerTrabalhadorEquipe();  // Chama a função de remover
+            removerTrabalhadorEquipe();
+            const equipeId = document.getElementById('floatingInputEquipe').value;
+            window.location.href = `../trabalhadores/trabalhadores-by-equipe.html?id=${equipeId}`;
         });
     });
 </script>
