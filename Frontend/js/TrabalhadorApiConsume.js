@@ -29,126 +29,127 @@ async function createUser() {
 
         if (response.ok) {
             alert('Trabalhador cadastrado com sucesso!');
-            // Redireciona para a tela de trabalhadores cadastrados após a criação
             window.location.href = 'trabalhadode_cad.html';
-        } else {
-            // Caso haja erro, tenta extrair a mensagem de erro da resposta
-            const errorData = await response.json();
-            console.error('Erro ao cadastrar trabalhador:', errorData);
-            alert('Erro ao cadastrar trabalhador. Verifique os dados informados.');
         }
+
     } catch (error) {
         console.error('Erro na requisição:', error);
         alert('Ocorreu um erro ao cadastrar o trabalhador.');
     }
 }
 
-async function findAllEnderecos() {
-    const url = `${baseUrl}/find-all`;
+async function findAllTrabalhadores() {
+    // Monta a URL para buscar todos os trabalhadores
+    const url = `${baseUrl}/find-all`; // Substitua pela URL correta, caso necessário
 
     try {
         const response = await fetch(url);
         const data = await response.json();
 
-        console.log("Endereços recebidos:", data);
+        console.log("Dados recebidos:", data);
 
-        // Extrai a lista de endereços da propriedade "content"
-        const enderecos = data.content;
-        if (!enderecos || enderecos.length === 0) {
-            console.log("Nenhum endereço encontrado.");
+        // Extrai a lista de trabalhadores da propriedade "content"
+        const trabalhadores = data.content;
+        if (!trabalhadores || trabalhadores.length === 0) {
+            console.log("Nenhum trabalhador encontrado.");
             return;
         }
 
-        // Seleciona a tabela de endereços
-        const tabelaBody = document.getElementById('tabelaEnderecosBody');
-        tabelaBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
-
-        enderecos.forEach(endereco => {
+        // Para cada trabalhador, cria uma linha na tabela
+        trabalhadores.forEach(trabalhador => {
+            // Cria um novo elemento de linha (<tr>)
             const novaLinha = document.createElement('tr');
 
-            // Criando células
+            // Cria as células da tabela para exibir os dados do trabalhador
             const tdId = document.createElement('td');
-            const tdCep = document.createElement('td');
-            const tdRua = document.createElement('td');
-            const tdNumero = document.createElement('td');
-            const tdComplemento = document.createElement('td');
+            const tdNome = document.createElement('td');
+            const tdCpf = document.createElement('td');
+            const tdSalario = document.createElement('td');
             const tdAcoes = document.createElement('td');
 
-            // Preenchendo as células com os dados do endereço
-            tdId.innerText = endereco.id || "N/A";
-            tdCep.innerText = endereco.cep || "N/A";
-            tdRua.innerText = endereco.rua || "N/A";
-            tdNumero.innerText = endereco.numero || "N/A";
-            tdComplemento.innerText = endereco.complemento || "N/A";
+            // Preenche as células com os dados do trabalhador
+            tdId.innerText = trabalhador.id || "N/A";
+            tdNome.innerText = trabalhador.nome || "N/A";
+            tdCpf.innerText = trabalhador.cpf || "N/A";
+            tdSalario.innerText = trabalhador.salario || "Não especificado";
 
-            // Criando botão "Editar"
+            // Cria o botão de "Editar"
             const btnEditar = document.createElement('button');
             btnEditar.classList.add('btn', 'btn-secondary', 'btn-sm', 'me-2');
             btnEditar.textContent = 'Editar';
+            // Ao clicar, redireciona para a tela de edição com o id do trabalhador na URL
             btnEditar.addEventListener('click', () => {
-                window.location.href = `editar-endereco.html?id=${endereco.id}`;
+                window.location.href = `editar-trabalhador.html?id=${trabalhador.id}`;
             });
 
-            // Criando botão "Excluir"
+            // Cria o botão de "Excluir"
             const btnExcluir = document.createElement('button');
             btnExcluir.classList.add('btn', 'btn-danger', 'btn-sm');
             btnExcluir.textContent = 'Excluir';
-            btnExcluir.addEventListener('click', () => deleteEndereco(endereco.id));
+            // Ao clicar, chama a função deleteUser passando o id do trabalhador
+            btnExcluir.addEventListener('click', () => deleteUser(trabalhador.id));
 
-            // Adicionando botões à célula de ações
+            // Adiciona os botões na célula de ações
             tdAcoes.appendChild(btnEditar);
             tdAcoes.appendChild(btnExcluir);
 
-            // Adicionando células à linha
-            novaLinha.appendChild(tdCep);
-            novaLinha.appendChild(tdRua);
-            novaLinha.appendChild(tdNumero);
-            novaLinha.appendChild(tdComplemento);
+            // Adiciona todas as células na linha criada
+            novaLinha.appendChild(tdId);
+            novaLinha.appendChild(tdNome);
+            novaLinha.appendChild(tdCpf);
+            novaLinha.appendChild(tdSalario);
             novaLinha.appendChild(tdAcoes);
 
-            // Adicionando linha à tabela
-            tabelaBody.appendChild(novaLinha);
+            // Adiciona a linha na tabela (elemento com id "tabelaTrabalhadores")
+            document.getElementById('tabelaTrabalhadores').appendChild(novaLinha);
         });
     } catch (error) {
-        console.error("Erro ao buscar os endereços:", error);
+        console.error("Erro na requisição:", error); // Trata possíveis erros na requisição
     }
 }
 
-async function deleteEndereco(id) {
+async function deleteUser(id) {
     const url = `${baseUrl}/delete?id=${id}`;
 
-    if (confirm("Tem certeza de que deseja excluir este endereço?")) {
+    if (confirm("Tem certeza de que deseja excluir este trabalhador?")) {
         try {
-            const response = await fetch(url, { method: 'DELETE' });
+            const response = await fetch(url, {
+                method: 'DELETE', // Método para exclusão
+            });
 
             if (response.ok) {
-                alert('Endereço excluído com sucesso!');
-                findAllEnderecos(); // Atualiza a lista após exclusão
+                alert('Trabalhador excluído com sucesso!');
             } else {
+                // Caso haja erro ao excluir
                 const errorData = await response.json();
-                console.error('Erro ao excluir endereço:', errorData);
-                alert('Erro ao excluir endereço. Tente novamente.');
+                console.error('Erro ao excluir trabalhador:', errorData);
+                alert('Erro ao excluir trabalhador. Tente novamente.');
             }
         } catch (error) {
             console.error('Erro na requisição:', error);
-            alert('Ocorreu um erro ao excluir o endereço.');
+            alert('Ocorreu um erro ao excluir o trabalhador.');
         }
     }
 }
 
-async function editEndereco(id) {
-    const cep = document.getElementById('floatingInputCep').value;
-    const rua = document.getElementById('floatingInputRua').value;
-    const numero = document.getElementById('floatingInputNumero').value;
-    const complemento = document.getElementById('floatingInputComplemento').value;
+async function editTrabalhador() {
+    // Obtém os valores do formulário
+    const nome = document.getElementById('floatingInputNome').value;
+    const salario = document.getElementById('floatingInputSalario').value;
 
-    const enderecoData = {
-        cep: cep,
-        rua: rua,
-        numero: numero,
-        complemento: complemento
+    // Verifica se o ID do trabalhador está na URL
+    if (!id) {
+        alert("ID do trabalhador não encontrado.");
+        return;
+    }
+
+    // Monta o objeto com os dados atualizados
+    const updatedData = {
+        nome: nome,
+        salario: salario
     };
 
+    // URL do endpoint de atualização
     const url = `${baseUrl}/update?id=${id}`;
 
     try {
@@ -157,24 +158,19 @@ async function editEndereco(id) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(enderecoData)
+            body: JSON.stringify(updatedData)
         });
 
         if (response.ok) {
-            alert('Endereço atualizado com sucesso!');
-            window.location.href = 'enderecos.html';
+            alert('Trabalhador atualizado com sucesso!');
+            window.location.href = 'trabalhadode_cad.html'; // Redireciona para a lista após a edição
         } else {
             const errorData = await response.json();
-            console.error('Erro ao atualizar endereço:', errorData);
-            alert('Erro ao atualizar endereço. Verifique os dados informados.');
+            console.error('Erro ao editar trabalhador:', errorData);
+            alert('Erro ao editar trabalhador. Verifique os dados informados.');
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
-        alert('Ocorreu um erro ao atualizar o endereço.');
+        alert('Ocorreu um erro ao editar o trabalhador.');
     }
 }
-
-// Chama a função ao carregar a página
-document.addEventListener('DOMContentLoaded', function () {
-    findAllEnderecos();
-});

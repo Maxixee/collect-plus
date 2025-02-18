@@ -1,4 +1,6 @@
 const baseUrl = "http://localhost:8080/collect-plus/v1/equipes-coleta";
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
 
 async function createEquipeColeta() {
     const placaDoCarro = document.getElementById('floatingInput').value;
@@ -52,6 +54,14 @@ async function findAllEquipes() {
             tdId.innerText = equipe.id || "N/A";
             tdPlacaDoCarro.innerText = equipe.placaDoCarro || "Não especificada";
 
+            const btnEditar = document.createElement('button');
+            btnEditar.classList.add('btn', 'btn-secondary', 'btn-sm', 'me-2');
+            btnEditar.textContent = 'Editar';
+            // Ao clicar, redireciona para a tela de edição com o id do trabalhador na URL
+            btnEditar.addEventListener('click', () => {
+                window.location.href = `editar-equipe.html?id=${equipe.id}`;
+            });
+
             // Cria o botão de "Excluir"
             const btnExcluir = document.createElement('button');
             btnExcluir.classList.add('btn', 'btn-danger', 'btn-sm');
@@ -68,6 +78,7 @@ async function findAllEquipes() {
             });
 
             // Adiciona os botões na célula de ações
+            tdAcoes.appendChild(btnEditar);
             tdAcoes.appendChild(btnExcluir);
             tdAcoes.appendChild(btnVerTrabalhadores);
 
@@ -167,11 +178,43 @@ async function removerTrabalhadorEquipe() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('.cadastrar-equipe').addEventListener('click', function (event) {
-        event.preventDefault();
-        createEquipeColeta();
-        window.location.href = 'equipecad.html';
-    });
-});
+async function editEquipe() {
+    // Obtém os valores do formulário
+    const placaDoCarro = document.getElementById('floatingInputPlaca').value;
 
+    // Verifica se o ID do trabalhador está na URL
+    if (!id) {
+        alert("ID da equipe não encontrado.");
+        return;
+    }
+
+    // Monta o objeto com os dados atualizados
+    const updatedData = {
+        placaDoCarro: placaDoCarro
+    };
+
+    // URL do endpoint de atualização
+    const url = `${baseUrl}/update?id=${id}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (response.ok) {
+            alert('Equipe atualizada com sucesso!');
+            window.location.href = 'equipecad.html'; // Redireciona para a lista após a edição
+        } else {
+            const errorData = await response.json();
+            console.error('Erro ao editar equipe:', errorData);
+            alert('Erro ao editar equipe. Verifique os dados informados.');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        alert('Ocorreu um erro ao editar a equipe.');
+    }
+}
