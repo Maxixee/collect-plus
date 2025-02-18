@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tpbd
+    url: jdbc:postgresql://localhost:5432/topicosbd
     username: postgres
-    password: senhasegura
+    password: root
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

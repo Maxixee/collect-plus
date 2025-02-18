@@ -57,6 +57,17 @@ public class ColetaService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ColetaProjection> findAll(Pageable pageable) {
+        log.info("Buscando todas as coletas cadastradas.");
+
+        Page<ColetaProjection> coletas = coletaRepository.findAllProjectedBy(pageable);
+
+        log.info("Encontrados {} endereços.", coletas.getTotalElements());
+
+        return coletas;
+    }
+
+    @Transactional(readOnly = true)
     public Page<ColetaProjection> findByPontoColeta(Long pontoColetaId, Pageable pageable) {
         return coletaRepository.findByPontoColetaId(pontoColetaId, pageable);
     }
