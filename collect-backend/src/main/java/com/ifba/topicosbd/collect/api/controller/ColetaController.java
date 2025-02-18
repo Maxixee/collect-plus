@@ -66,6 +66,20 @@ public class ColetaController {
     }
 
     @Operation(
+            summary = "Listar todos as coletas",
+            description = "Recupera uma lista paginada de todas as coletas cadastradas no sistema.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de coletas recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class)))
+            }
+    )
+    @GetMapping("/find-all")
+    public ResponseEntity<PageableDto> findAll(Pageable pageable) {
+        Page<ColetaProjection> coletas = coletaService.findAll(pageable);
+        return ResponseEntity.ok(PageableMapper.toDto(coletas));
+    }
+
+    @Operation(
             summary = "Buscar coletas por ponto de coleta",
             description = "Recupera uma lista paginada de coletas associadas a um ponto de coleta específico.",
             responses = {
